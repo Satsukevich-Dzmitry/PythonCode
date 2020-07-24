@@ -1,1 +1,3 @@
-print(11)
+import django
+print(django.__version__)
+
