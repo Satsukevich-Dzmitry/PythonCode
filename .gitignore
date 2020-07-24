@@ -1,7 +1,8 @@
 **/*swp*
 **/*~
 **/.~
-**/.gitignore.swo 
+**/.gitignore.swo
+**/.README.md.un~ 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
