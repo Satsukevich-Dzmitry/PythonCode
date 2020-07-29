@@ -1,5 +1,5 @@
-import django
-print(django.__version__)
+import django as x
 
-for i in range(25):
-    print(i)
+x = x.__version__
+
+print(f"django ver: {x} - type: {type(x)}")
