@@ -25,7 +25,6 @@ class MyHandler(SimpleHTTPRequestHandler):
 
         self.respond(message=content)
 
-
     def handle_404(self):
         msg = f"""
                 <html>
@@ -56,10 +55,10 @@ class MyHandler(SimpleHTTPRequestHandler):
 
         if path == "/":
             self.handle_root()
-        elif path == "hello":
+        elif path == "/hello/":
             self.handle_hello()
         else:
-            self.handle_404
+            self.handle_404()
 
 
 if __name__ == "__main__":
