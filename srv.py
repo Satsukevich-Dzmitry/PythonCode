@@ -4,7 +4,7 @@ from http.server import SimpleHTTPRequestHandler
 
 PORT = int(os.getenv("PORT", 8000))
 
-CACHE_AGE = 60 * 60 * 24
+CACHE_AGE = 60 * 60 * 12
 
 
 class MyHandler(SimpleHTTPRequestHandler):
