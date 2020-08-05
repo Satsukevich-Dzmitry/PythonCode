@@ -1,5 +1,6 @@
 import os
 import socketserver
+from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
 #from PIL import Image
 
@@ -7,12 +8,10 @@ PORT = int(os.getenv("PORT", 8000))
 
 CACHE_AGE = 60 * 60 * 12
 
-
+project_dir = Path(__file__).parent.resolve()#Для привязки к нынешнему файлу, затем переход к папке(родитель) и выдача его пути
 
 class MyHandler(SimpleHTTPRequestHandler):
     def handle_root(self):
-       # img = Image.open("e:/python/PythonCode/unnamed.png", "r")
-        #img.save("unnamed.png", "png")
         #return SimpleHTTPRequestHandler.do_GET(self)
         return super().do_GET()#унаследовался от родительского класса
 
@@ -30,23 +29,19 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(message=content)
 
     def handle_404(self):
-        #img = Image.open("e:/python/PythonCode/IMG_1335.jpg", "r")
-        #img.save("IMG_1335.jpg")
-        #img.show()
-        #img = Image.open(IMG_1335.jpg)
         msg = f"""
                 <html>
                  <head>
                 <meta charset="utf-8">
-                <style>
-                <body>
-                 background-image: url("e://python/Pythoncode/IMG_1335.jpg") no-repeat;
-                background-size:100%;
-                  <body/>
+                <style type="text/css">
+                body {{ 
+                    background: url("/IMG_1335.jpg/") no-repeat;
+                    background-size:100%;
+                }}
                 </style>
                 </head>
                  <body>
-                <p></p>
+                <p>check</p>
                  </body>
                 </html>
                 """
@@ -58,7 +53,9 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(message)))
         self.send_header("Cache-control", f"public, max-age=<{CACHE_AGE}>")
         self.end_headers()
-        self.wfile.write(message.encode())
+        if isinstance(message,str):
+            message = message.encode()
+        self.wfile.write(message)
 
     def build_path(self) -> str:
         result = self.path
@@ -66,12 +63,26 @@ class MyHandler(SimpleHTTPRequestHandler):
             result = f"{result}/"
         return result
 
+
+    def import_file(self, path, mode="rb", content="image", filetype="jpg"):
+        img = project_dir/path
+        if not img.exists():
+            return self.handle_404()
+
+        with img.open(mode) as fp:
+            img = fp.read()
+
+        self.respond(img, content_type=f"{content}/{filetype}")
+
+
     def do_GET(self):
-
         path = self.build_path()
-
         if path == "/":
             self.handle_root()
+        elif path == "/unnamed.png/":
+            self.import_file("unnamed.png", "rb", "image", "png")
+        elif path == "/IMG_1335.jpg/":
+            self.import_file("IMG_1335.jpg", "rb", "image" "jpg")
         elif path == "/hello/":
             self.handle_hello()
         else:
@@ -80,5 +91,5 @@ class MyHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
-        print("works")
+        print("works",project_dir)
         httpd.serve_forever(poll_interval=1)
