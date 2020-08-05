@@ -65,10 +65,8 @@ class MyHandler(SimpleHTTPRequestHandler):
         img = project_dir/path
         if not img.exists():
             return self.handle_404()
-
         with img.open(mode) as fp:
             img = fp.read()
-
         self.respond(img, content_type=f"{content}/{filetype}")
 
 
@@ -88,5 +86,5 @@ class MyHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     with socketserver.TCPServer(("", Try.PORT), MyHandler) as httpd:
-        print("works",project_dir)
+        print("works", project_dir)
         httpd.serve_forever(poll_interval=1)
