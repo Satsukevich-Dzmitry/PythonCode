@@ -8,6 +8,8 @@ httpie = "*"
 
 [packages]
 django = "*"
+pillow = "*"
+python-settings = "*"
 
 [requires]
 python_version = "3.8"
