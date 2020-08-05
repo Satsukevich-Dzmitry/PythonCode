@@ -2,11 +2,8 @@ import os
 import socketserver
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
+import Try
 #from PIL import Image
-
-PORT = int(os.getenv("PORT", 8000))
-
-CACHE_AGE = 60 * 60 * 12
 
 project_dir = Path(__file__).parent.resolve()#Для привязки к нынешнему файлу, затем переход к папке(родитель) и выдача его пути
 
@@ -47,11 +44,11 @@ class MyHandler(SimpleHTTPRequestHandler):
                 """
         self.respond(message=msg, code=404, content_type="text/html")
 
-    def respond(self, message, code=200, content_type="text/html", max_age=CACHE_AGE):
+    def respond(self, message, code=200, content_type="text/html", max_age=Try.CACHE_AGE):
         self.send_response(code)
         self.send_header("Content-Type", content_type)  # вынести контент тайп
         self.send_header("Content-Length", str(len(message)))
-        self.send_header("Cache-control", f"public, max-age=<{CACHE_AGE}>")
+        self.send_header("Cache-control", f"public, max-age=<{Try.CACHE_AGE}>")
         self.end_headers()
         if isinstance(message,str):
             message = message.encode()
@@ -90,6 +87,6 @@ class MyHandler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
+    with socketserver.TCPServer(("", Try.PORT), MyHandler) as httpd:
         print("works",project_dir)
         httpd.serve_forever(poll_interval=1)
