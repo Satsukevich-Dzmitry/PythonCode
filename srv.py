@@ -15,7 +15,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                 <html>
                 <head>
                 <title>XXX</title>
-                <link rel="stylesheet" href="/Style/hello.css/"
+                <link rel="stylesheet" href="../Style/hello.css/"
                 </head>
                 <body>
                 <h1>hello world</h1>
@@ -27,7 +27,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(message=content)
 
     def handle_congrats(self):
-        content=self.import_file("congrats.html", "r", "text", "html")
+        content = self.import_file("congrats.html", "r", "text", "html")
         self.respond(message=content)
 
     def handle_404(self):
@@ -55,7 +55,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(message)))
         self.send_header("Cache-control", f"public, max-age={max_age}")
         self.end_headers()
-        if isinstance(message,str):
+        if isinstance(message, str):
             message = message.encode()
         self.wfile.write(message)
 
