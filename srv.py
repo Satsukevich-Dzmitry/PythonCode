@@ -2,6 +2,7 @@ import socketserver
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
 import Try
+import Path_create
 
 project_dir = Path(__file__).parent.resolve()  #Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
 
@@ -59,11 +60,6 @@ class MyHandler(SimpleHTTPRequestHandler):
             message = message.encode()
         self.wfile.write(message)
 
-    def build_path(self) -> str:
-        result = self.path
-        if result[-1] != "/":
-            result = f"{result}/"
-        return result
 
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
@@ -76,7 +72,7 @@ class MyHandler(SimpleHTTPRequestHandler):
 
 
     def do_GET(self):
-        path = self.build_path()
+        path = Path_create.build_path(self.path)
         if path == "/":
             self.handle_root()
         elif path == "/unnamed.png/":
