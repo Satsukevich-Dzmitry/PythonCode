@@ -82,7 +82,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         elif path == "/hello/":
             self.handle_hello()
         elif path == "/Style/hello.css/":
-            self.import_file("./Style/hello.css", "r", "text", "css")
+            self.import_file(f"{project_dir}/Style/hello.css", "r", "text", "css")
         elif path == "/congrats/":
             self.handle_congrats()
         elif path == "/Happy_winner.png/":
