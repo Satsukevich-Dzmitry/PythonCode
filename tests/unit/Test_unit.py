@@ -3,6 +3,7 @@ from Path_create import build_path
 
 def test_normalize_path():
     dataset = {
+        "":"/",
         "/":"/",
         "/hello":"hello/",
         "hello///":"hello///",
