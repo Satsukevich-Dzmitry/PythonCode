@@ -31,7 +31,7 @@ def test_mypath():
         "/congrats//",
     ]
 
-    for i in range(5):
+    for i in range(len(original)):
         got = build_path(original[i])
         expected = newname[i]
         assert got == expected, f"path{original[i]} normalized to {got}, while expected{expected}"
