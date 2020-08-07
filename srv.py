@@ -1,11 +1,9 @@
-import os
 import socketserver
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
 import Try
-#from PIL import Image
 
-project_dir = Path(__file__).parent.resolve()#Для привязки к нынешнему файлу, затем переход к папке(родитель) и выдача его пути
+project_dir = Path(__file__).parent.resolve()  #Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
 
 class MyHandler(SimpleHTTPRequestHandler):
     def handle_root(self):
@@ -15,7 +13,10 @@ class MyHandler(SimpleHTTPRequestHandler):
     def handle_hello(self):
         content = f"""
                 <html>
-                <head><title>XXX</title></head>
+                <head>
+                <title>XXX</title>
+                <link rel="stylesheet" href="/Style/hello.css/"
+                </head>
                 <body>
                 <h1>hello world</h1>
                 <p>{self.path}</p>
@@ -23,6 +24,10 @@ class MyHandler(SimpleHTTPRequestHandler):
                 </html>
                 """
 
+        self.respond(message=content)
+
+    def handle_congrats(self):
+        content=self.import_file("congrats.html", "r", "text", "html")
         self.respond(message=content)
 
     def handle_404(self):
@@ -80,6 +85,12 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.import_file("IMG_1335.jpg", "rb", "image" "jpg")
         elif path == "/hello/":
             self.handle_hello()
+        elif path == "/Style/hello.css/":
+            self.import_file("./Style/hello.css", "r", "text", "css")
+        elif path == "/congrats/":
+            self.handle_congrats()
+        elif path == "/Happy_winner.png/":
+            self.import_file("Happy_winner.png", "rb", "image" "png")
         else:
             self.handle_404()
 
