@@ -52,12 +52,12 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(message=msg, code=404, content_type="text/html")
 
     def respond(self, message, code=200, content_type="text/html", max_age=Consts.CACHE_AGE):
-        message = to_bytes.to_bytes(message)
         self.send_response(code)
         self.send_header("Content-Type", content_type)  # вынести контент тайп
         self.send_header("Content-Length", str(len(message)))
         self.send_header("Cache-control", f"public, max-age={max_age}")
         self.end_headers()
+        message = to_bytes.to_bytes(message)
         self.wfile.write(message)
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
