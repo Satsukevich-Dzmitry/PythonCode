@@ -10,7 +10,6 @@ project_dir = Path(__file__).parent.resolve()  # Для привязки к фа
 
 class MyHandler(SimpleHTTPRequestHandler):
     def handle_root(self):
-        # return SimpleHTTPRequestHandler.do_GET(self)
         return super().do_GET()  # унаследовался от родительского класса
 
     def handle_hello(self):
@@ -71,19 +70,27 @@ class MyHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = path_create.build_path(self.path)
+
         handlers = {
-                    "/": self.handle_root(),
-                    '/unnamed.png': self.import_file("unnamed.png", "rb", "image", "png"),
-                    "/IMG_1335.jpg/":  self.import_file("IMG_1335.jpg", "rb", "image", "jpg"),
-                    "/hello/": self.handle_hello(),
-                    "/Style/hello.css/": self.import_file("Style/hello.css", "r", "text", "css"),
-                    "/congrats/": self.handle_congrats(),
-                    "/Happy_winner.png/": self.import_file("Happy_winner.png", "rb", "image", "png"),
+                    "/": self.handle_root,
+
+                    "/hello/": self.handle_hello,
+
+                    "/congrats/": self.handle_congrats,
+
                     }
+        importing_files={
+            "/Style/hello.css/": ["Style/hello.css", "r", "text", "css"],
+            "/Happy_winner.png/": ["Happy_winner.png", "rb", "image", "png"],
+            '/unnamed.png': ["unnamed.png", "rb", "image", "png"],
+            "/IMG_1335.jpg/": ["IMG_1335.jpg", "rb", "image", "jpg"],
+        }
         try:
             handler = handlers[path]
             handler()
-        except [NotFound, KeyError]:
+            importing = importing_files[path]
+            self.import_file(importing)
+        except (NotFound, KeyError):
             self.handle_404()
 
 
