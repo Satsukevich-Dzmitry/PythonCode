@@ -3,6 +3,7 @@ from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
 import Consts
 import Path_create
+import to_bytes
 
 project_dir = Path(__file__).parent.resolve()  #Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
 
@@ -56,19 +57,18 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(message)))
         self.send_header("Cache-control", f"public, max-age={max_age}")
         self.end_headers()
-        if isinstance(message, str):
-            message = message.encode()
+        message = to_bytes.to_bytes(message)
         self.wfile.write(message)
 
 
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
-        img = project_dir/path
-        if not img.exists():
+        file = project_dir/path
+        if not file.exists():
             return self.handle_404()
-        with img.open(mode) as fp:
-            img = fp.read()
-        self.respond(img, content_type=f"{content}/{filetype}")
+        with file.open(mode) as fp:
+            file = fp.read()
+        self.respond(file, content_type=f"{content}/{filetype}")
 
 
     def do_GET(self):
@@ -82,7 +82,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         elif path == "/hello/":
             self.handle_hello()
         elif path == "/Style/hello.css/":
-            self.import_file("/Style/hello.css", "r", "text", "css")
+            self.import_file("./Style/hello.css", "r", "text", "css")
         elif path == "/congrats/":
             self.handle_congrats()
         elif path == "/Happy_winner.png/":

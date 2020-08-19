@@ -1,4 +1,5 @@
 from Path_create import build_path
+from to_bytes import to_bytes
 
 
 def test_normalize_path():
@@ -35,3 +36,16 @@ def test_mypath():
         got = build_path(original[i])
         expected = newname[i]
         assert got == expected, f"path{original[i]} normalized to {got}, while expected{expected}"
+
+
+def test_encode():
+    original = [
+        " ",
+        "/",
+        "hello",
+        "hello/",
+        "/congrats//",
+    ]
+    for i in range(len(original)):
+        result = to_bytes(original[i])
+        assert type(result) == bytes, f"{original[i]} didn't convert"
