@@ -3,6 +3,7 @@ from http.server import SimpleHTTPRequestHandler
 import Consts
 import path_create
 import to_bytes
+from errors import NotFound
 
 project_dir = Path(__file__).parent.resolve()  # Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
 
@@ -70,19 +71,19 @@ class MyHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = path_create.build_path(self.path)
-        if path == "/":
-            self.handle_root()
-        elif path == "/unnamed.png/":
-            self.import_file("unnamed.png", "rb", "image", "png")
-        elif path == "/IMG_1335.jpg/":
-            self.import_file("IMG_1335.jpg", "rb", "image", "jpg")
-        elif path == "/hello/":
-            self.handle_hello()
-        elif path == "/Style/hello.css/":
-            self.import_file("Style/hello.css", "r", "text", "css")
-        elif path == "/congrats/":
-            self.handle_congrats()
-        elif path == "/Happy_winner.png/":
-            self.import_file("Happy_winner.png", "rb", "image", "png")
-        else:
+        handlers = {
+                    "/": self.handle_root(),
+                    '/unnamed.png': self.import_file("unnamed.png", "rb", "image", "png"),
+                    "/IMG_1335.jpg/":  self.import_file("IMG_1335.jpg", "rb", "image", "jpg"),
+                    "/hello/": self.handle_hello(),
+                    "/Style/hello.css/": self.import_file("Style/hello.css", "r", "text", "css"),
+                    "/congrats/": self.handle_congrats(),
+                    "/Happy_winner.png/": self.import_file("Happy_winner.png", "rb", "image", "png"),
+                    }
+        try:
+            handler = handlers[path]
+            handler()
+        except [NotFound, KeyError]:
             self.handle_404()
+
+
