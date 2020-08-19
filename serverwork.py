@@ -1,16 +1,16 @@
-
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
 import Consts
-import Path_create
+import path_create
 import to_bytes
 
-project_dir = Path(__file__).parent.resolve()  #Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
+project_dir = Path(__file__).parent.resolve()  # Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
+
 
 class MyHandler(SimpleHTTPRequestHandler):
     def handle_root(self):
-        #return SimpleHTTPRequestHandler.do_GET(self)
-        return super().do_GET()#унаследовался от родительского класса
+        # return SimpleHTTPRequestHandler.do_GET(self)
+        return super().do_GET()  # унаследовался от родительского класса
 
     def handle_hello(self):
         content = f"""
@@ -60,25 +60,22 @@ class MyHandler(SimpleHTTPRequestHandler):
         message = to_bytes.to_bytes(message)
         self.wfile.write(message)
 
-
-
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
-        file = project_dir/path
+        file = project_dir / path
         if not file.exists():
             return self.handle_404()
         with file.open(mode) as fp:
             file = fp.read()
         self.respond(file, content_type=f"{content}/{filetype}")
 
-
     def do_GET(self):
-        path = Path_create.build_path(self.path)
+        path = path_create.build_path(self.path)
         if path == "/":
             self.handle_root()
         elif path == "/unnamed.png/":
             self.import_file("unnamed.png", "rb", "image", "png")
         elif path == "/IMG_1335.jpg/":
-            self.import_file("IMG_1335.jpg", "rb", "image" "jpg")
+            self.import_file("IMG_1335.jpg", "rb", "image", "jpg")
         elif path == "/hello/":
             self.handle_hello()
         elif path == "/Style/hello.css/":
@@ -86,6 +83,6 @@ class MyHandler(SimpleHTTPRequestHandler):
         elif path == "/congrats/":
             self.handle_congrats()
         elif path == "/Happy_winner.png/":
-            self.import_file("Happy_winner.png", "rb", "image" "png")
+            self.import_file("Happy_winner.png", "rb", "image", "png")
         else:
             self.handle_404()
