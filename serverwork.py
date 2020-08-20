@@ -35,7 +35,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.import_file("images/unnamed.png", "rb", "image", "png")
 
     def handle_hellocss(self):
-        self.import_file("Style/hello.css", "r", "text", "css")
+        self.import_file("style/hello.css", "r", "text", "css")
 
     def handle_happywinner(self):
         self.import_file("images/Happy_winner.png", "rb", "image", "png")
