@@ -86,7 +86,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/": self.handle_root,
                     "/hello/": self.handle_hello,
                     "/congrats/": self.handle_congrats,
-                    "/Style/hello.css/": self.handle_hellocss,
+                    "/style/hello.css/": self.handle_hellocss,
                     "/Happy_winner.png/": self.handle_happywinner,
                     "/unnamed.png/": self.handle_unnamed,
                     "/IMG_1335.jpg/": self.handle_404image,
