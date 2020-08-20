@@ -91,16 +91,9 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/unnamed.png/": self.handle_unnamed,
                     "/IMG_1335.jpg/": self.handle_404image,
                     }
-  #      importing_files = {
-   #          self.import_file("/Style/hello.css", "r", "text", "css"),
-   #          self.import_file("/Happy_winner.png", "rb", "image", "png"),
-   #          self.import_file("/unnamed.png", "rb", "image", "png"),
-   #          self.import_file("/IMG_1335.jpg", "rb", "image", "jpg"),
-   #     }
         try:
             handler = handlers[path]
             handler()
-            #importing_files[path]
         except (NotFound, KeyError):
             self.handle_404()
 
