@@ -29,8 +29,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(message=content)
 
     def handle_congrats(self):
-        content = self.import_file("congrats.html", "r", "text", "html")
-        self.respond(message=content)
+        self.import_file("congrats.html", "r", "text", "html")
 
     def handle_404(self):
         msg = f"""
@@ -73,23 +72,19 @@ class MyHandler(SimpleHTTPRequestHandler):
 
         handlers = {
                     "/": self.handle_root,
-
                     "/hello/": self.handle_hello,
-
                     "/congrats/": self.handle_congrats,
-
                     }
-        importing_files={
-            "/Style/hello.css/": ["Style/hello.css", "r", "text", "css"],
-            "/Happy_winner.png/": ["Happy_winner.png", "rb", "image", "png"],
-            '/unnamed.png': ["unnamed.png", "rb", "image", "png"],
-            "/IMG_1335.jpg/": ["IMG_1335.jpg", "rb", "image", "jpg"],
+        importing_files = {
+            "/Style/hello.css/": self.import_file("/Style/hello.css", "r", "text", "css"),
+            "/Happy_winner.png/": self.import_file("/Happy_winner.png", "rb", "image", "png"),
+            "/unnamed.png/": self.import_file("/unnamed.png", "rb", "image", "png"),
+            "/IMG_1335.jpg/": self.import_file("/IMG_1335.jpg", "rb", "image", "jpg"),
         }
         try:
             handler = handlers[path]
             handler()
-            importing = importing_files[path]
-            self.import_file(importing)
+            #importing_files[path]
         except (NotFound, KeyError):
             self.handle_404()
 
