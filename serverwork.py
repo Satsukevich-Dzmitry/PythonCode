@@ -17,7 +17,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                 <html>
                 <head>
                 <title>XXX</title>
-                <link rel="stylesheet" href="/Style/hello.css/"
+                <link rel="stylesheet" href="/style/hello.css/"
                 </head>
                 <body>
                 <h1>hello world</h1>
