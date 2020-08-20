@@ -29,7 +29,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(message=content)
 
     def handle_congrats(self):
-        self.import_file("congrats.html", "r", "text", "html")
+        self.import_file("html_files/congrats.html", "r", "text", "html")
 
     def handle_unnamed(self):
         self.import_file("images/unnamed.png", "rb", "image", "png")
@@ -44,23 +44,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.import_file("images/IMG_1335.jpg", "rb", "image", "jpg")
 
     def handle_404(self):
-        msg = f"""
-                <html>
-                 <head>
-                <meta charset="utf-8">
-                <styles type="text/css">
-                body {{ 
-                    background: url("/IMG_1335.jpg/") no-repeat;
-                    background-size:100%;
-                }}
-                </styles>
-                </head>
-                 <body>
-                <p>check</p>
-                 </body>
-                </html>
-                """
-        self.respond(message=msg, code=404, content_type="text/html")
+        self.import_file("html_files/404.html", "r", "text", "html")
 
     def respond(self, message, code=200, content_type="text/html", max_age=Consts.CACHE_AGE):
         self.send_response(code)
@@ -96,5 +80,3 @@ class MyHandler(SimpleHTTPRequestHandler):
             handler()
         except (NotFound, KeyError):
             self.handle_404()
-
-
