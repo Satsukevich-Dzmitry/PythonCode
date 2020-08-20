@@ -17,7 +17,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                 <html>
                 <head>
                 <title>XXX</title>
-                <link rel="stylesheet" href="/style/hello.css/"
+                <link rel="stylesheet" href="/hello.css/"
                 </head>
                 <body>
                 <h1>hello world</h1>
@@ -86,7 +86,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/": self.handle_root,
                     "/hello/": self.handle_hello,
                     "/congrats/": self.handle_congrats,
-                    "/style/hello.css/": self.handle_hellocss,
+                    "/hello.css/": self.handle_hellocss,
                     "/Happy_winner.png/": self.handle_happywinner,
                     "/unnamed.png/": self.handle_unnamed,
                     "/IMG_1335.jpg/": self.handle_404image,
