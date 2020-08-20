@@ -31,6 +31,18 @@ class MyHandler(SimpleHTTPRequestHandler):
     def handle_congrats(self):
         self.import_file("congrats.html", "r", "text", "html")
 
+    def handle_unnamed(self):
+        self.import_file("/unnamed.png", "rb", "image", "png")
+
+    def handle_hellocss(self):
+        self.import_file("/Style/hello.css", "r", "text", "css")
+
+    def handle_happywinner(self):
+        self.import_file("/Happy_winner.png", "rb", "image", "png")
+
+    def handle_404image(self):
+        self.import_file("/IMG_1335.jpg", "rb", "image", "jpg")
+
     def handle_404(self):
         msg = f"""
                 <html>
@@ -74,12 +86,16 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/": self.handle_root,
                     "/hello/": self.handle_hello,
                     "/congrats/": self.handle_congrats,
+                    "/Style/hello.css/": self.handle_hellocss,
+                    "/Happy_winner.png/": self.handle_happywinner,
+                    "/unnamed.png/": self.handle_unnamed,
+                    "/IMG_1335.jpg/": self.handle_404image,
                     }
   #      importing_files = {
-   #         "/Style/hello.css/": self.import_file("/Style/hello.css", "r", "text", "css"),
-   #         "/Happy_winner.png/": self.import_file("/Happy_winner.png", "rb", "image", "png"),
-   #         "/unnamed.png/": self.import_file("/unnamed.png", "rb", "image", "png"),
-   #         "/IMG_1335.jpg/": self.import_file("/IMG_1335.jpg", "rb", "image", "jpg"),
+   #          self.import_file("/Style/hello.css", "r", "text", "css"),
+   #          self.import_file("/Happy_winner.png", "rb", "image", "png"),
+   #          self.import_file("/unnamed.png", "rb", "image", "png"),
+   #          self.import_file("/IMG_1335.jpg", "rb", "image", "jpg"),
    #     }
         try:
             handler = handlers[path]
