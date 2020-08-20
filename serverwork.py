@@ -35,7 +35,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.import_file("images/unnamed.png", "rb", "image", "png")
 
     def handle_hellocss(self):
-        self.import_file("style/hello.css", "r", "text", "css")
+        self.import_file("styles/hello.css", "r", "text", "css")
 
     def handle_happywinner(self):
         self.import_file("images/Happy_winner.png", "rb", "image", "png")
@@ -48,12 +48,12 @@ class MyHandler(SimpleHTTPRequestHandler):
                 <html>
                  <head>
                 <meta charset="utf-8">
-                <style type="text/css">
+                <styles type="text/css">
                 body {{ 
                     background: url("/IMG_1335.jpg/") no-repeat;
                     background-size:100%;
                 }}
-                </style>
+                </styles>
                 </head>
                  <body>
                 <p>check</p>
