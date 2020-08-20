@@ -13,20 +13,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         return super().do_GET()  # унаследовался от родительского класса
 
     def handle_hello(self):
-        content = f"""
-                <html>
-                <head>
-                <title>XXX</title>
-                <link rel="stylesheet" href="/hello.css/"
-                </head>
-                <body>
-                <h1>hello world</h1>
-                <p>{self.path}</p>
-                </body>
-                </html>
-                """
-
-        self.respond(message=content)
+        self.import_file("html_files/hello.html", "r", "text", "html")
 
     def handle_congrats(self):
         self.import_file("html_files/congrats.html", "r", "text", "html")
