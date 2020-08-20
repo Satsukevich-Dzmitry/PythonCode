@@ -75,12 +75,12 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/hello/": self.handle_hello,
                     "/congrats/": self.handle_congrats,
                     }
-        importing_files = {
-            "/Style/hello.css/": self.import_file("/Style/hello.css", "r", "text", "css"),
-            "/Happy_winner.png/": self.import_file("/Happy_winner.png", "rb", "image", "png"),
-            "/unnamed.png/": self.import_file("/unnamed.png", "rb", "image", "png"),
-            "/IMG_1335.jpg/": self.import_file("/IMG_1335.jpg", "rb", "image", "jpg"),
-        }
+  #      importing_files = {
+   #         "/Style/hello.css/": self.import_file("/Style/hello.css", "r", "text", "css"),
+   #         "/Happy_winner.png/": self.import_file("/Happy_winner.png", "rb", "image", "png"),
+   #         "/unnamed.png/": self.import_file("/unnamed.png", "rb", "image", "png"),
+   #         "/IMG_1335.jpg/": self.import_file("/IMG_1335.jpg", "rb", "image", "jpg"),
+   #     }
         try:
             handler = handlers[path]
             handler()
