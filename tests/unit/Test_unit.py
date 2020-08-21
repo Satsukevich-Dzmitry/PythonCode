@@ -25,4 +25,5 @@ def test_encode():
     }
     for original, encoded in testing_data.items():
         result = to_bytes(original)
-        assert result == encoded, f"{original} didnt correctly turned into bytes"
+        assert result == encoded, \
+            f"{original} didnt correctly turned into bytes"
