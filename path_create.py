@@ -31,6 +31,7 @@ def get_contenttype(file_path: str) ->str:
             "png": "png",
             "svg": "svg+xml",
             "css": "css",
+            "html": "html"
             }
         content_type = content_type_by_extension[file_type]
     except IndexError:
