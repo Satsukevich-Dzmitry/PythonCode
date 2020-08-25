@@ -9,13 +9,16 @@ def build_path(path : str) -> str:
 def get_file_for_path(url) -> tuple:
     path = build_path(url)
     splited_path = path.split("/")
-
     try:
         file_path = splited_path[-2]
     except IndexError:
         file_path = None
     path = build_path(splited_path[1])
-    path = f"/{path}" if path != "/" else path
+    if path != "/":
+        path = f"/{path}"
+    else:
+        path = "/html_files/"
+        file_path = "index.html"
 
     return path, file_path
 

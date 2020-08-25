@@ -33,9 +33,6 @@ class MyHandler(SimpleHTTPRequestHandler):
         path, file_path = path_create.get_file_for_path(self.path)
         content_type = path_create.get_contenttype(file_path)
         requests = {
-                    "/": [self.import_file, ["html_files/index.html", "r", "text", "html"]],
-                    "/hello/": [self.import_file, ["html_files/hello.html", "r", "text", "html"]],
-                    "/congrats/": [self.import_file, ["html_files/congrats.html", "r", "text", "html"]],
                     "/style/": [self.import_file, [f"styles/{file_path}", "r", "text", "css"]],
                     "/images/": [self.import_file, [f"images/{file_path}", "rb", "image", f"{content_type}"]],
                     "/html_files/": [self.import_file, [f"html_files/{file_path}", "r", "text", "html"]],
