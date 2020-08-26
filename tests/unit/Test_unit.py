@@ -28,7 +28,7 @@ def test_encode():
     for original, encoded in testing_data.items():
         result = to_bytes(original)
         assert result == encoded, \
-            f"{original} didnt correctly turned into bytes"
+            f"{original} didn't correctly turned into bytes"
 
 def test_getting_path():
     dataset = {

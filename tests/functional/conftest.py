@@ -1,14 +1,13 @@
-"""
 import pytest
 from selenium import webdriver
 
 
 @pytest.yield_fixture(scope="function", autouse=True)
-def chrome():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("headless")
+def firefox():
+    firefox_options = webdriver.FirefoxOptions()
+    firefox_options.add_argument("--headless")
 
-    browser = webdriver.Chrome(chrome_options=chrome_options)
+    browser = webdriver.Firefox(firefox_options=firefox_options)
     browser.implicitly_wait(10)
 
     try:
@@ -16,4 +15,3 @@ def chrome():
     finally:
         browser.close()
         browser.quit()
-"""

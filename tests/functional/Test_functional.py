@@ -1,10 +1,8 @@
-"""
 import pytest
 
 
 @pytest.mark.functional
-def test(chrome):
-    chrome.get("http://localhost:8000/")
-    assert "Opening_page(not_functional)" in chrome.title
-    assert "unnamed" in chrome.page_source
-"""
+def test(firefox):
+    firefox.get("http://localhost:8000/")
+    assert "Opening_page" in firefox.title
+    assert "/images/opening_picture.jpg/" in firefox.page_source

@@ -5,13 +5,14 @@ verify_ssl = true
 
 [dev-packages]
 httpie = "*"
+pytest-selenium = "*"
 pytest = "*"
+pytest-firefox = "*"
 
 [packages]
 django = "*"
 pillow = "*"
 python-settings = "*"
-pytest-selenium = "*"
 
 [requires]
 python_version = "3.8"
