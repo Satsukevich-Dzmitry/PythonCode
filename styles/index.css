@@ -10,6 +10,9 @@ P {
 body{
  background-image: url("../../images/unnamed.png/");
 }
+.colortext {
+    color: #930; /* Цвет текста */
+   }
 .btn {
     display: inline-block; /* Строчно-блочный элемент */
     background: #DAA520; /* Серый цвет фона */

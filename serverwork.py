@@ -6,6 +6,8 @@ import to_bytes
 from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
+from custom_class import Endpoint
+from web_app_namespace import web_app_names
 
 
 project_dir = Path(__file__).parent.resolve()  # Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
@@ -21,6 +23,23 @@ class MyHandler(SimpleHTTPRequestHandler):
         message = to_bytes.to_bytes(message)
         self.wfile.write(message)
 
+    def handle_hello(self, endpoint):
+        name_dict = web_app_names.get_qs_info(endpoint.query_string)
+        content = f"""
+                <html>
+                <head>
+                <title>Hello Page</title>
+                <link rel="stylesheet" href="/style/hello.css/">
+                </head>
+                <body>
+                <h1>Hello {name_dict.name} {name_dict.surname}!</h1>
+                <h1>{name_dict.age}!</h1>
+                </body>
+                </html>
+                """
+
+        self.respond(content)
+
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
         file = project_dir / path
         if not file.exists():
@@ -30,15 +49,16 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(file, content_type=f"{content}/{filetype}")
 
     def do_GET(self):
-        path, file_path = path_create.get_file_for_path(self.path)
-        content_type = path_create.get_contenttype(file_path)
+        endpoint = Endpoint.from_path(self.path)
+        content_type = path_create.get_contenttype(endpoint.file_name)
         requests = {
-                    "/style/": [self.import_file, [f"styles/{file_path}", "r", "text", "css"]],
-                    "/images/": [self.import_file, [f"images/{file_path}", "rb", "image", f"{content_type}"]],
-                    "/html_files/": [self.import_file, [f"html_files/{file_path}", "r", "text", "html"]],
+                    "/hello/": [self.handle_hello, [endpoint]],
+                    "/style/": [self.import_file, [f"styles/{endpoint.file_name}", "r", "text", "css"]],
+                    "/images/": [self.import_file, [f"images/{endpoint.file_name}", "rb", "image", f"{content_type}"]],
+                    "/html_files/": [self.import_file, [f"html_files/{endpoint.file_name}", "r", "text", "html"]],
                     }
         try:
-            handler, args = requests[path]
+            handler, args = requests[endpoint.normal]
             handler(*args)
         except (NotFound, KeyError):
             self.import_file("html_files/404.html", "r", "text", "html")
