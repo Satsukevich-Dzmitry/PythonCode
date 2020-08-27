@@ -1,20 +1,20 @@
 H1 {
-  color: #000080;
+  color: #E0FFFF;
   font-size: 200%;
   font-family: Arial, Verdana, sans-serif;
   text-align: center;
 }
 P {
-  padding-left: 20px;
+  padding-left: 40px;
 }
 body{
- background-color: #008080;
+ background-image: url("../../images/unnamed.png/");
 }
 .btn {
     display: inline-block; /* Строчно-блочный элемент */
-    background: #8C959D; /* Серый цвет фона */
+    background: #DAA520; /* Серый цвет фона */
     color: #fff; /* Белый цвет текста */
-    padding: 1rem 1.5rem; /* Поля вокруг текста */
+    padding: 1rem 1.25rem; /* Поля вокруг текста */
     text-decoration: none; /* Убираем подчёркивание */
     border-radius: 15px;
     }

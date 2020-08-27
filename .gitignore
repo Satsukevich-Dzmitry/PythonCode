@@ -4,7 +4,8 @@
 **/.idea
 **/gitignore.swo
 **/pipenv
-**/.README.md.un~ 
+**/.README.md.un~
+**/geckodriver.log
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
