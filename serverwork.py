@@ -1,16 +1,13 @@
-from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
 import Consts
 import path_create
 import to_bytes
+from Consts import project_dir
 from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
 from custom_class import Endpoint
-from web_app_namespace import web_app_names
-
-
-project_dir = Path(__file__).parent.resolve()  # Для привязки к файлу,затем переход к папке(родитель)и выдача его пути
+from web_app_namespace import Web_app_names
 
 
 class MyHandler(SimpleHTTPRequestHandler):
@@ -24,7 +21,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.wfile.write(message)
 
     def handle_hello(self, endpoint):
-        name_dict = web_app_names.get_qs_info(endpoint.query_string)
+        name_dict = Web_app_names.get_qs_info(endpoint.query_string)
         content = f"""
                 <html>
                 <head>
@@ -33,7 +30,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                 </head>
                 <body>
                 <h1>Hello {name_dict.name} {name_dict.surname}!</h1>
-                <h1>{name_dict.age}!</h1>
+                <h1>{name_dict.year}!</h1>
                 </body>
                 </html>
                 """

@@ -1,5 +1,6 @@
 import pytest
 from selenium import webdriver
+from Consts import project_dir
 
 
 @pytest.yield_fixture(scope="function", autouse=True)
@@ -15,3 +16,8 @@ def firefox():
     finally:
         browser.close()
         browser.quit()
+
+def main_css():
+    path = project_dir / "styles" / "index.css"
+    with path.open("r") as src:
+        yield src.read()

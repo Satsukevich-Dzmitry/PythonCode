@@ -1,7 +1,7 @@
 from path_create import build_path
 from to_bytes import to_bytes
-from path_create import get_file_for_path
 from path_create import get_contenttype
+from custom_class import Endpoint
 
 
 def test_normalize_path():
@@ -30,17 +30,6 @@ def test_encode():
         assert result == encoded, \
             f"{original} didn't correctly turned into bytes"
 
-def test_getting_path():
-    dataset = {
-        "/": ("/html_files/", "index.html"),
-        "/html_files/hello.html": ("/html_files/", "hello.html"),
-        "/images/unnamed.png/": ("/images/", "unnamed.png"),
-    }
-    for path, expected in dataset.items():
-        got = get_file_for_path(path)
-        assert got == expected, \
-            f"path {path} normalized to {got},\
-                 while {expected} expected"
 
 def test_getting_filetype():
     dataset = {
@@ -53,3 +42,16 @@ def test_getting_filetype():
         assert got == expected, \
             f"path {path} normalized to {got},\
                  while {expected} expected"
+
+def test_endpoint():
+    dataset = {
+        "": Endpoint(original="", normal="/", file_name=None, query_string=None),
+        "/": Endpoint(original="/", normal="/html_files/", file_name="index.html", query_string=None),
+        "/images/unnamed.png/": Endpoint(original="/images/unnamed.png/", normal="/images/", file_name="unnamed.png", query_string=None),
+        "/images/unnamed.png": Endpoint(original="/images/unnamed.png", normal="/images/", file_name="unnamed.png", query_string=None),
+        "/images/unnamed.png/?wed": Endpoint(original="/images/unnamed.png/", normal="/images/", file_name="unnamed.png",
+                                         query_string="wed"),
+    }
+    for path, expected in dataset.items():
+        got = Endpoint.from_path(path)
+        assert got == expected, f"Get {got}, while expected {expected}"

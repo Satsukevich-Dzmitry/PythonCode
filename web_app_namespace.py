@@ -2,15 +2,16 @@ from typing import NamedTuple
 from typing import Optional
 
 
-class web_app_names(NamedTuple):
+class Web_app_names(NamedTuple):
     name: str
     surname: str
-    age: Optional[str]
+    age: int
+    year: Optional[str]
 
     @classmethod
-    def get_qs_info(cls, qs: str) -> "web_app_names":
+    def get_qs_info(cls, qs: str) -> "Web_app_names":
         if not qs:
-            return web_app_names(name="stranger", surname="mysteryomagad", age=None)
+            return Web_app_names(name="stranger", surname="mysteryomagad", age=None, year=None)
 
         pairs = qs.split("&")
 
@@ -22,7 +23,10 @@ class web_app_names(NamedTuple):
                 surname = value
             if key == "age":
                 try:
-                    age = "You was born at " + str(2020 - int(value))
+                    age = int(value)
+                    year_of_birth = 2020 - int(value)
+                    year = f"You was born at  {year_of_birth}"
                 except ValueError:
-                    age = "Wrong Input"
-        return web_app_names(name=name, surname=surname, age=age)
+                    age = None
+                    year = "Wrong Input"
+        return Web_app_names(name=name, surname=surname, age=age, year=year)
