@@ -17,6 +17,8 @@ def firefox():
         browser.close()
         browser.quit()
 
+
+@pytest.yield_fixture(scope="function", autouse=True)
 def main_css():
     path = project_dir / "styles" / "index.css"
     with path.open("r") as src:

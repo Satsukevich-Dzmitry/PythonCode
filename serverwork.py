@@ -29,8 +29,9 @@ class MyHandler(SimpleHTTPRequestHandler):
                 <link rel="stylesheet" href="/style/hello.css/">
                 </head>
                 <body>
-                <h1>Hello {name_dict.name} {name_dict.surname}!</h1>
+                <h1 class="ribbon"><strong class="ribbon-content">Hello {name_dict.name} {name_dict.surname}!</strong></h1>
                 <h1>{name_dict.year}!</h1>
+                <p><a href="/html_files/index.html" class="btn"> Opening_page </a></p>
                 </body>
                 </html>
                 """
