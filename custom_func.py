@@ -1,26 +1,10 @@
-def build_path(path : str) -> str:
+def build_path(path: str) -> str:
     resultpath = path
     if not path:
         resultpath = "/"
     elif resultpath[-1] != "/":
         resultpath = f"{resultpath}/"
     return resultpath
-
-def get_file_for_path(url) -> tuple:
-    path = build_path(url)
-    splited_path = path.split("/")
-    try:
-        file_path = splited_path[-2]
-    except IndexError:
-        file_path = None
-    path = build_path(splited_path[1])
-    if path != "/":
-        path = f"/{path}"
-    else:
-        path = "/html_files/"
-        file_path = "index.html"
-
-    return path, file_path
 
 def get_contenttype(file_path: str) ->str:
     if not file_path:
@@ -41,3 +25,9 @@ def get_contenttype(file_path: str) ->str:
         content_type = None
 
     return content_type
+
+
+def to_bytes(massage: str) -> bytes:
+    if isinstance(massage, str):
+        massage = massage.encode()
+    return massage

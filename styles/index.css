@@ -10,11 +10,14 @@ P {
 body{
  background-image: url("../../images/unnamed.png/");
 }
+.colortext {
+    color: #930;
+   }
 .btn {
-    display: inline-block; /* Строчно-блочный элемент */
-    background: #DAA520; /* Серый цвет фона */
-    color: #fff; /* Белый цвет текста */
-    padding: 1rem 1.25rem; /* Поля вокруг текста */
-    text-decoration: none; /* Убираем подчёркивание */
+    display: inline-block;
+    background: #DAA520;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
     border-radius: 15px;
     }

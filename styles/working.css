@@ -1,0 +1,20 @@
+h1 {
+  color: #800000;
+  font-size: 300%;
+  font-family: Snell Roundhand, cursive;
+  text-align: center;
+}
+P {
+  padding-left: 45px;
+}
+body{
+  background-image: url("../../images/working.png/");
+}
+.btn {
+    display: inline-block;
+    background: #FFE4E1;
+    color: red;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: 65px;
+    }
