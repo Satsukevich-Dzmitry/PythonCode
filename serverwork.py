@@ -1,13 +1,12 @@
 from http.server import SimpleHTTPRequestHandler
 import Consts
-import path_create
-import to_bytes
+import custom_func
 from Consts import project_dir
 from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
 from custom_class import Endpoint
-from web_app_namespace import Web_app_names
+from web_app_namespace import Web_App_Names
 
 
 class MyHandler(SimpleHTTPRequestHandler):
@@ -17,11 +16,11 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(message)))
         self.send_header("Cache-control", f"public, max-age={max_age}")
         self.end_headers()
-        message = to_bytes.to_bytes(message)
+        message = custom_func.to_bytes(message)
         self.wfile.write(message)
 
     def handle_hello(self, endpoint):
-        name_dict = Web_app_names.get_qs_info(endpoint.query_string)
+        name_dict = Web_App_Names.get_qs_info(endpoint.query_string)
         content = f"""
                 <html>
                 <head>
@@ -48,7 +47,7 @@ class MyHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         endpoint = Endpoint.from_path(self.path)
-        content_type = path_create.get_contenttype(endpoint.file_name)
+        content_type = custom_func.get_contenttype(endpoint.file_name)
         requests = {
                     "/hello/": [self.handle_hello, [endpoint]],
                     "/style/": [self.import_file, [f"styles/{endpoint.file_name}", "r", "text", "css"]],

@@ -1,5 +1,6 @@
 import pytest
 
+
 url = "http://localhost:8000"
 
 @pytest.mark.functional

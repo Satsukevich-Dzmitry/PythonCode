@@ -1,4 +1,4 @@
-def build_path(path : str) -> str:
+def build_path(path: str) -> str:
     resultpath = path
     if not path:
         resultpath = "/"
@@ -25,3 +25,9 @@ def get_contenttype(file_path: str) ->str:
         content_type = None
 
     return content_type
+
+
+def to_bytes(massage: str) -> bytes:
+    if isinstance(massage, str):
+        massage = massage.encode()
+    return massage
