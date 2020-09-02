@@ -2,17 +2,21 @@ from itertools import takewhile
 from typing import NamedTuple
 from typing import Optional
 
+from custom_func import get_contenttype
 
-class Endpoint(NamedTuple):
+
+class Request_http(NamedTuple):
+    method: str
     original: str
     normal: str
+    contenttype: str
     file_name: Optional[str]
     query_string: Optional[str]
 
     @classmethod
-    def from_path(cls, path: str) -> "Endpoint":
+    def from_path(cls, path: str, method: str) -> "Request_http":
         if not path:
-            return Endpoint(original="", normal="/", file_name=None, query_string=None)
+            return Request_http(method="get", original="", normal="/", contenttype="html", file_name=None, query_string=None)
 
         xxx = path.split("?")
         if len(xxx) == 2:
@@ -29,7 +33,7 @@ class Endpoint(NamedTuple):
         else:
             normal = "/html_files/"
             file_name = "index.html"
-
-        return Endpoint(
-            original=path, normal=normal, file_name=file_name, query_string=qs
+        contenttype = get_contenttype(file_name)
+        return Request_http(
+            method=method, original=path, normal=normal, contenttype=contenttype, file_name=file_name, query_string=qs
         )

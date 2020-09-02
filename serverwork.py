@@ -5,7 +5,7 @@ from Consts import project_dir
 from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
-from custom_class import Endpoint
+from custom_class import Request_http
 from web_app_namespace import Web_App_Names
 
 
@@ -13,14 +13,26 @@ class MyHandler(SimpleHTTPRequestHandler):
     def respond(self, message, code=200, content_type="text/html", max_age=Consts.CACHE_AGE):
         self.send_response(code)
         self.send_header("Content-Type", content_type)  # вынести контент тайп
+        message = custom_func.to_bytes(message)
         self.send_header("Content-Length", str(len(message)))
         self.send_header("Cache-control", f"public, max-age={max_age}")
         self.end_headers()
-        message = custom_func.to_bytes(message)
         self.wfile.write(message)
 
+    def get_qs_fromPostRequest(self) -> str:
+        content_length_str = self.headers.get("content-length", 0)
+        content_length = int(content_length_str)
+
+        if not content_length:
+            return""
+
+        payload_bytes = self.rfile.read(content_length)
+        payload = payload_bytes.decode()
+        return payload
+
     def handle_hello(self, endpoint):
-        name_dict = Web_App_Names.get_qs_info(endpoint.query_string)
+        query_string = endpoint.query_string or self.get_qs_fromPostRequest()
+        name_dict = Web_App_Names.get_qs_info(query_string)
         content = f"""
                 <html>
                 <head>
@@ -46,16 +58,22 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.respond(file, content_type=f"{content}/{filetype}")
 
     def do_GET(self):
-        endpoint = Endpoint.from_path(self.path)
-        content_type = custom_func.get_contenttype(endpoint.file_name)
+        return self.do_request("get")
+
+    def do_POST(self):
+        return self.do_request("post")
+
+    def do_request(self, http_method):
+        request = Request_http.from_path(self.path, method=http_method)
+        content_type = custom_func.get_contenttype(request.file_name)
         requests = {
-                    "/hello/": [self.handle_hello, [endpoint]],
-                    "/style/": [self.import_file, [f"styles/{endpoint.file_name}", "r", "text", "css"]],
-                    "/images/": [self.import_file, [f"images/{endpoint.file_name}", "rb", "image", f"{content_type}"]],
-                    "/html_files/": [self.import_file, [f"html_files/{endpoint.file_name}", "r", "text", "html"]],
+                    "/hello/": [self.handle_hello, [request]],
+                    "/style/": [self.import_file, [f"styles/{request.file_name}", "r", "text", "css"]],
+                    "/images/": [self.import_file, [f"images/{request.file_name}", "rb", "image", f"{content_type}"]],
+                    "/html_files/": [self.import_file, [f"html_files/{request.file_name}", "r", "text", "html"]],
                     }
         try:
-            handler, args = requests[endpoint.normal]
+            handler, args = requests[request.normal]
             handler(*args)
         except (NotFound, KeyError):
             self.import_file("html_files/404.html", "r", "text", "html")
@@ -63,3 +81,5 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.respond("", code=405, content_type="text/plain")
         except Exception:
             self.respond(traceback.format_exc(), code=500, content_type="text/plain")
+
+
