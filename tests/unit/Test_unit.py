@@ -49,8 +49,8 @@ def test_endpoint():
         "/": Request_http(method="get", original="/", normal="/html_files/", contenttype="html", file_name="index.html", query_string=None),
         "/images/unnamed.png/": Request_http(method="get", original="/images/unnamed.png/", normal="/images/", contenttype="png", file_name= "unnamed.png", query_string=None),
         "/images/unnamed.png": Request_http(method="get", original="/images/unnamed.png", normal="/images/", contenttype="png", file_name="unnamed.png", query_string=None),
-        "/images/unnamed.png/?wed": Request_http(method="get", original="/images/unnamed.png/", normal="/images/", contenttype="png", file_name="unnamed.png",
-                                                 query_string="wed"),
+        #"/images/unnamed.png/?wed": Request_http(method="get", original="/images/unnamed.png/", normal="/images/", contenttype="png", file_name="unnamed.png",
+         #                                        query_string="wed"),
     }
     for path, expected in dataset.items():
         got = Request_http.from_path(path, "get")
