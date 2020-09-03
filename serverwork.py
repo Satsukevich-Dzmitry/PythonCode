@@ -2,6 +2,7 @@ from http.server import SimpleHTTPRequestHandler
 import Consts
 import custom_func
 from Consts import project_dir
+from custom_func import save_user_qs_to_file, get_user_qs_from_file, get_qs_fromPostRequest
 from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
@@ -19,19 +20,16 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(message)
 
-    def get_qs_fromPostRequest(self) -> str:
-        content_length_str = self.headers.get("content-length", 0)
-        content_length = int(content_length_str)
+    def redirect(self, to: str):
+        self.send_response(302)
+        self.send_header("Location", to)
+        self.end_headers()
 
-        if not content_length:
-            return""
+    def handle_hello(self, endpoint: Request_http):
+        if endpoint.method != "get":
+            raise MethodNotAllowed
 
-        payload_bytes = self.rfile.read(content_length)
-        payload = payload_bytes.decode()
-        return payload
-
-    def handle_hello(self, endpoint):
-        query_string = endpoint.query_string or self.get_qs_fromPostRequest()
+        query_string = get_user_qs_from_file()
         name_dict = Web_App_Names.get_qs_info(query_string)
         content = f"""
                 <html>
@@ -42,6 +40,15 @@ class MyHandler(SimpleHTTPRequestHandler):
                 <body>
                 <h1 class="ribbon"><strong class="ribbon-content">Hello {name_dict.name} {name_dict.surname}!</strong></h1>
                 <h1>{name_dict.year}!</h1>
+                 <form action="/handle_hello_update/" method="post">
+                    <label for="xxx-id">Your name:</label>
+                    <input type="text" name="name" id="xxx-id">
+                    <label for="surname-id" >Your surname:</label>
+                    <input type="text" name="surname" id="surname-id">
+                    <label for="age-id">Your age:</label>
+                    <input type="text" name="age" id="age-id">
+                    <button type="submit">Thanks</button>
+                </form>
                 <p><a href="/html_files/index.html" class="btn"> Opening_page </a></p>
                 </body>
                 </html>
@@ -63,14 +70,22 @@ class MyHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         return self.do_request("post")
 
+    def handle_hello_update(self, request: Request_http):
+        if request.method != "post":
+            raise MethodNotAllowed
+
+        qs = get_qs_fromPostRequest(self.headers, self.rfile)
+        save_user_qs_to_file(qs)
+        self.redirect("/hello")
+
     def do_request(self, http_method):
         request = Request_http.from_path(self.path, method=http_method)
-        content_type = custom_func.get_contenttype(request.file_name)
         requests = {
                     "/hello/": [self.handle_hello, [request]],
-                    "/style/": [self.import_file, [f"styles/{request.file_name}", "r", "text", "css"]],
-                    "/images/": [self.import_file, [f"images/{request.file_name}", "rb", "image", f"{content_type}"]],
-                    "/html_files/": [self.import_file, [f"html_files/{request.file_name}", "r", "text", "html"]],
+                    "/style/": [self.import_file, [f"styles/{request.file_name}", "r", "text", f"{request.contenttype}"]],
+                    "/images/": [self.import_file, [f"images/{request.file_name}", "rb", "image", f"{request.contenttype}"]],
+                    "/html_files/": [self.import_file, [f"html_files/{request.file_name}", "r", "text", f"{request.contenttype}"]],
+                    "/handle_hello_update/": [self.handle_hello_update, [request]],
                     }
         try:
             handler, args = requests[request.normal]
