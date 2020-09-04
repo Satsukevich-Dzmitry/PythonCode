@@ -6,7 +6,7 @@ from urllib.parse import urlsplit
 from custom_func import get_contenttype
 
 
-class Request_http(NamedTuple):
+class RequestHttp(NamedTuple):
     original: str
     normal: str
     contenttype: str
@@ -15,9 +15,9 @@ class Request_http(NamedTuple):
     query_string: Optional[str]
 
     @classmethod
-    def from_path(cls, path: str, method: str) -> "Request_http":
+    def from_path(cls, path: str, method: str) -> "RequestHttp":
         if not path:
-            return Request_http(method="get", original="", normal="/", contenttype="html", file_name=None, query_string=None)
+            return RequestHttp(method="get", original="", normal="/", contenttype="html", file_name=None, query_string=None)
 
         components = urlsplit(path)
 
@@ -32,6 +32,6 @@ class Request_http(NamedTuple):
             normal = "/html_files/"
             file_name = "index.html"
         contenttype = get_contenttype(file_name)
-        return Request_http(
+        return RequestHttp(
             method=method or "get", original=path, normal=normal, contenttype=contenttype, file_name=file_name, query_string=components.query or None
         )

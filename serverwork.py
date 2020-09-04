@@ -6,7 +6,7 @@ from custom_func import save_user_qs_to_file, get_user_qs_from_file, get_qs_from
 from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
-from custom_class import Request_http
+from custom_class import RequestHttp
 from web_app_namespace import Web_App_Names
 
 
@@ -25,7 +25,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Location", to)
         self.end_headers()
 
-    def handle_hello(self, endpoint: Request_http):
+    def handle_hello(self, endpoint: RequestHttp):
         if endpoint.method != "get":
             raise MethodNotAllowed
 
@@ -70,7 +70,7 @@ class MyHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         return self.do_request("post")
 
-    def handle_hello_update(self, request: Request_http):
+    def handle_hello_update(self, request: RequestHttp):
         if request.method != "post":
             raise MethodNotAllowed
 
@@ -79,7 +79,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.redirect("/hello")
 
     def do_request(self, http_method):
-        request = Request_http.from_path(self.path, method=http_method)
+        request = RequestHttp.from_path(self.path, method=http_method)
         requests = {
                     "/hello/": [self.handle_hello, [request]],
                     "/style/": [self.import_file, [f"styles/{request.file_name}", "r", "text", f"{request.contenttype}"]],

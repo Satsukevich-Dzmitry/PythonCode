@@ -1,7 +1,7 @@
 from web_app_namespace import Web_App_Names
 from custom_func import build_path, to_bytes
 from custom_func import get_contenttype
-from custom_class import Request_http
+from custom_class import RequestHttp
 
 
 def test_normalize_path():
@@ -45,15 +45,15 @@ def test_getting_filetype():
 
 def test_endpoint():
     dataset = {
-        "": Request_http(method="get", original="", normal="/", contenttype="html", file_name=None, query_string=None),
-        "/": Request_http(method="get", original="/", normal="/html_files/", contenttype="html", file_name="index.html", query_string=None),
-        "/images/unnamed.png/": Request_http(method="get", original="/images/unnamed.png/", normal="/images/", contenttype="png", file_name= "unnamed.png", query_string=None),
-        "/images/unnamed.png": Request_http(method="get", original="/images/unnamed.png", normal="/images/", contenttype="png", file_name="unnamed.png", query_string=None),
+        "": RequestHttp(method="get", original="", normal="/", contenttype="html", file_name=None, query_string=None),
+        "/": RequestHttp(method="get", original="/", normal="/html_files/", contenttype="html", file_name="index.html", query_string=None),
+        "/images/unnamed.png/": RequestHttp(method="get", original="/images/unnamed.png/", normal="/images/", contenttype="png", file_name="unnamed.png", query_string=None),
+        "/images/unnamed.png": RequestHttp(method="get", original="/images/unnamed.png", normal="/images/", contenttype="png", file_name="unnamed.png", query_string=None),
         #"/images/unnamed.png/?wed": Request_http(method="get", original="/images/unnamed.png/", normal="/images/", contenttype="png", file_name="unnamed.png",
          #                                        query_string="wed"),
     }
     for path, expected in dataset.items():
-        got = Request_http.from_path(path, "get")
+        got = RequestHttp.from_path(path, "get")
         assert got == expected, f"Get {got}, while expected {expected}"
 
 def test_querystr_read():
