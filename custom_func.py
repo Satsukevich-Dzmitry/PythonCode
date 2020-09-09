@@ -1,4 +1,5 @@
 from Consts import project_dir
+from errors import NotFound
 
 
 def build_path(path: str) -> str:
@@ -67,3 +68,39 @@ def get_qs_fromPostRequest(headers, rfile) -> str:
     payload_bytes = rfile.read(content_length)
     payload = payload_bytes.decode()
     return payload
+
+
+def name_validation(names: str):
+    if not names:
+        raise ValueError("MUST NOT be empty")
+
+    if not names.isalnum() or names.isdigit():
+        raise ValueError("MUST contain letters")
+
+    lmin, lmax = 3, 20
+    if not lmin <= len(names) <= lmax:
+        raise ValueError(f"MUST have length between {lmin}..{lmax} chars")
+
+
+def validate_age(age: str) -> None:
+    if not age:
+        raise ValueError("MUST NOT be empty")
+
+    if isinstance(age, str) and not age.isdecimal():
+        raise ValueError("MUST contain digits only")
+
+    value = int(age)
+    if value <= 0:
+        raise ValueError("MUST be positive integer")
+
+def read_content(path: str):
+    static_obj = project_dir / path
+    if not static_obj.is_file():
+        static_path = static_obj.resolve().as_posix()
+        err_msg = f"file <{static_path}> not found"
+        raise NotFound(err_msg)
+
+    with static_obj.open("rb") as src:
+        content = src.read()
+
+    return content

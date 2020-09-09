@@ -1,10 +1,20 @@
 <html>
-                <head>
-                <title>XXX</title>
-                <link rel="stylesheet" href="/style/hello.css/">
-                </head>
-                <body>
-                <h1>hello world</h1>
-                <a href="/html_files/congrats.html" class="btn"> Congrats</a>
-                </body>
-                </html>
+                            <head>
+                            <title>Hello Page</title>
+                            <link rel="stylesheet" href="/style/hello.css/">
+                            </head>
+                            <body>
+                            <h1 class="ribbon"><strong class="ribbon-content">Hello {user_name} {user_surname}!</strong></h1>
+                            <h1>{user_year}!</h1>
+                             <form action="/handle_hello_update/" method="post">
+                                <label for="xxx-id">Your name:</label>
+                                <input type="text" name="name" id="xxx-id">
+                                <label for="surname-id" >Your surname:</label>
+                                <input type="text" name="surname" id="surname-id">
+                                <label for="age-id">Your age:</label>
+                                <input type="text" name="age" id="age-id">
+                                <button type="submit">Thanks</button>
+                            </form>
+                            <p><a href="/html_files/index.html" class="btn"> Opening_page </a></p>
+                            </body>
+                            </html>

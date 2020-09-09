@@ -7,7 +7,7 @@ from errors import NotFound
 import traceback
 from errors import MethodNotAllowed
 from custom_class import Request_http
-from web_app_namespace import Web_App_Names
+from User_data import User_name
 
 
 class MyHandler(SimpleHTTPRequestHandler):
@@ -25,36 +25,23 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Location", to)
         self.end_headers()
 
+    def render_hello(self, Names: str):
+        name_dict = User_name.get_qs_info(Names)
+        file = custom_func.read_content("html_files/hello.html").decode()
+        page_data = {
+            "user_name": name_dict.name,
+            "user_surname": name_dict.surname,
+            "user_year": name_dict.year,
+        }
+        content = file.format(**page_data)
+        self.respond(content)
+
     def handle_hello(self, endpoint: Request_http):
         if endpoint.method != "get":
             raise MethodNotAllowed
 
         query_string = get_user_qs_from_file()
-        name_dict = Web_App_Names.get_qs_info(query_string)
-        content = f"""
-                <html>
-                <head>
-                <title>Hello Page</title>
-                <link rel="stylesheet" href="/style/hello.css/">
-                </head>
-                <body>
-                <h1 class="ribbon"><strong class="ribbon-content">Hello {name_dict.name} {name_dict.surname}!</strong></h1>
-                <h1>{name_dict.year}!</h1>
-                 <form action="/handle_hello_update/" method="post">
-                    <label for="xxx-id">Your name:</label>
-                    <input type="text" name="name" id="xxx-id">
-                    <label for="surname-id" >Your surname:</label>
-                    <input type="text" name="surname" id="surname-id">
-                    <label for="age-id">Your age:</label>
-                    <input type="text" name="age" id="age-id">
-                    <button type="submit">Thanks</button>
-                </form>
-                <p><a href="/html_files/index.html" class="btn"> Opening_page </a></p>
-                </body>
-                </html>
-                """
-
-        self.respond(content)
+        self.render_hello(query_string)
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
         file = project_dir / path
@@ -70,27 +57,38 @@ class MyHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         return self.do_request("post")
 
-    def handle_hello_update(self, request: Request_http):
+    def handle_hello_update(self, request: Request_http, User: User_name):
         if request.method != "post":
             raise MethodNotAllowed
-
         qs = get_qs_fromPostRequest(self.headers, self.rfile)
-        save_user_qs_to_file(qs)
-        self.redirect("/hello")
+        user = User.get_qs_info(qs)
+        check = user.valid
+        if check:
+            save_user_qs_to_file(qs)
+            self.redirect("/hello")
+        else:
+            self.render_hello(qs)
+
+
 
     def do_request(self, http_method):
         request = Request_http.from_path(self.path, method=http_method)
+        user = User_name
         requests = {
                     "/hello/": [self.handle_hello, [request]],
                     "/style/": [self.import_file, [f"styles/{request.file_name}", "r", "text", f"{request.contenttype}"]],
                     "/images/": [self.import_file, [f"images/{request.file_name}", "rb", "image", f"{request.contenttype}"]],
                     "/html_files/": [self.import_file, [f"html_files/{request.file_name}", "r", "text", f"{request.contenttype}"]],
-                    "/handle_hello_update/": [self.handle_hello_update, [request]],
+                    "/handle_hello_update/": [self.handle_hello_update, [request, user]],
                     }
         try:
-            handler, args = requests[request.normal]
+            try:
+                handler, args = requests[request.normal]
+            except KeyError:
+                raise NotFound
+
             handler(*args)
-        except (NotFound, KeyError):
+        except NotFound:
             self.import_file("html_files/404.html", "r", "text", "html")
         except MethodNotAllowed:
             self.respond("", code=405, content_type="text/plain")
