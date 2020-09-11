@@ -25,7 +25,7 @@ class User_name(NamedTuple):
             age = 0
         name_list = keys_and_values.get("name", ["stranger"])
         name = name_list[0]
-        surname_list = keys_and_values.get("surname", ["Didn't tell"])
+        surname_list = keys_and_values.get("surname", ["NoSurname"])
         surname = surname_list[0]
         age_list = keys_and_values.get("age", [0])
         age = age_list[0]
@@ -42,14 +42,17 @@ class User_name(NamedTuple):
             except ValueError as error:
                 errors[field] = str(error)
         if "name" in errors:
-            name = "Nope"
+            name = "Incorrect name"
 
         if "surname" in errors:
-            surname = "Wrong"
+            surname = "Wrong surname"
 
         if "age" not in errors:
             age = int(age)
-            year = f"You was born at {datetime.now().year - age}"
+            if age < datetime.now().year:
+                year = f"You was born at {datetime.now().year - age}"
+            else:
+                year = f"You was born at {abs(datetime.now().year - age)}BC (Srsly?)"
         else:
             year = "Incorrect value of age"
 

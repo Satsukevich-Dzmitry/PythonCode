@@ -8,12 +8,15 @@
                             <h1>{user_year}!</h1>
                              <form action="/handle_hello_update/" method="post">
                                 <label for="xxx-id">Your name:</label>
-                                <input type="text" name="name" id="xxx-id">
+                                <input type="text" name="name" id="xxx-id" value="{user_name}">
                                 <label for="surname-id" >Your surname:</label>
-                                <input type="text" name="surname" id="surname-id">
+                                <input type="text" name="surname" id="surname-id" value="{user_surname}" color="{html_text_color}">
                                 <label for="age-id">Your age:</label>
-                                <input type="text" name="age" id="age-id">
+                                <input type="text" name="age" id="age-id" value="{user_age}">
                                 <button type="submit">Thanks</button>
+                            </form>
+                            <form action="/reset/" method="post">
+                                <button type="submit">Reset</button>
                             </form>
                             <p><a href="/html_files/index.html" class="btn"> Opening_page </a></p>
                             </body>

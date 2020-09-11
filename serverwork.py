@@ -2,6 +2,7 @@ from http.server import SimpleHTTPRequestHandler
 import Consts
 import custom_func
 from Consts import project_dir
+from Errors_func import Html_colors
 from custom_func import save_user_qs_to_file, get_user_qs_from_file, get_qs_fromPostRequest
 from errors import NotFound
 import traceback
@@ -28,10 +29,13 @@ class MyHandler(SimpleHTTPRequestHandler):
     def render_hello(self, Names: str):
         name_dict = User_name.get_qs_info(Names)
         file = custom_func.read_content("html_files/hello.html").decode()
+        text_color = Html_colors.html_colors(name_dict)
         page_data = {
             "user_name": name_dict.name,
             "user_surname": name_dict.surname,
             "user_year": name_dict.year,
+            "user_age": name_dict.age,
+            "html_text_color": text_color.text_color,
         }
         content = file.format(**page_data)
         self.respond(content)
@@ -70,6 +74,11 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.render_hello(qs)
 
 
+    def reset_data(self, request: Request_http):
+        if request.method != "post":
+            raise MethodNotAllowed
+        save_user_qs_to_file("name=&surname=&age=")
+        self.redirect("/hello")
 
     def do_request(self, http_method):
         request = Request_http.from_path(self.path, method=http_method)
@@ -80,6 +89,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/images/": [self.import_file, [f"images/{request.file_name}", "rb", "image", f"{request.contenttype}"]],
                     "/html_files/": [self.import_file, [f"html_files/{request.file_name}", "r", "text", f"{request.contenttype}"]],
                     "/handle_hello_update/": [self.handle_hello_update, [request, user]],
+                    "/reset/": [self.reset_data, [request]]
                     }
         try:
             try:
