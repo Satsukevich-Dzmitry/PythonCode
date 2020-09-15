@@ -20,14 +20,16 @@ class User_name(NamedTuple):
         try:
             keys_and_values = parse_qs(qs, strict_parsing=True)
         except ValueError:
-            name = "stranger"
-            surname = "Didn't tell"
-            age = 0
-        name_list = keys_and_values.get("name", ["stranger"])
+            keys_and_values ={
+                "name": ["stranger"],
+                "surname": ["Didn't tell"],
+                "age": [0],
+            }
+        name_list = keys_and_values.get("name")
         name = name_list[0]
-        surname_list = keys_and_values.get("surname", ["NoSurname"])
+        surname_list = keys_and_values.get("surname")
         surname = surname_list[0]
-        age_list = keys_and_values.get("age", [0])
+        age_list = keys_and_values.get("age")
         age = age_list[0]
         errors = {}
 

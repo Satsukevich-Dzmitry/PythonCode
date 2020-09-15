@@ -1,3 +1,4 @@
+import os
 from http.server import SimpleHTTPRequestHandler
 import Consts
 import custom_func
@@ -12,11 +13,13 @@ from User_data import User_name
 
 
 class MyHandler(SimpleHTTPRequestHandler):
-    def respond(self, message, code=200, content_type="text/html", max_age=Consts.CACHE_AGE):
+    def respond(self, message, code=200, content_type="text/html", max_age=Consts.CACHE_AGE, set_cookies=""):
         self.send_response(code)
         self.send_header("Content-Type", content_type)  # вынести контент тайп
         message = custom_func.to_bytes(message)
         self.send_header("Content-Length", str(len(message)))
+        if set_cookies:
+            self.send_header("Set-Cookie", f"{set_cookies}")
         self.send_header("Cache-control", f"public, max-age={max_age}")
         self.end_headers()
         self.wfile.write(message)
@@ -36,16 +39,21 @@ class MyHandler(SimpleHTTPRequestHandler):
             "user_year": name_dict.year,
             "user_age": name_dict.age,
             "html_text_color": text_color.text_color,
+            "html_input_color": text_color.input_color,
         }
         content = file.format(**page_data)
-        self.respond(content)
+        return content
 
     def handle_hello(self, endpoint: Request_http):
         if endpoint.method != "get":
             raise MethodNotAllowed
+        sessionID = self.headers.get("Cookie")
+        if not sessionID:
+            sessionID = str(self.generate_session())
+        query_string = get_user_qs_from_file(sessionID)
+        content = self.render_hello(query_string)
+        self.respond(content, set_cookies=sessionID)
 
-        query_string = get_user_qs_from_file()
-        self.render_hello(query_string)
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
         file = project_dir / path
@@ -61,17 +69,27 @@ class MyHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         return self.do_request("post")
 
+    @staticmethod
+    def generate_session():
+        return str(os.urandom(16).hex())
+
+
     def handle_hello_update(self, request: Request_http, User: User_name):
         if request.method != "post":
             raise MethodNotAllowed
         qs = get_qs_fromPostRequest(self.headers, self.rfile)
+        sessionID = custom_func.get_session(self.headers)
+        if not sessionID:
+            sessionID = self.generate_session()
         user = User.get_qs_info(qs)
         check = user.valid
         if check:
-            save_user_qs_to_file(qs)
+            save_user_qs_to_file(qs, sessionID)
             self.redirect("/hello")
+
         else:
-            self.render_hello(qs)
+            content = self.render_hello(qs)
+            self.respond(content)
 
 
     def reset_data(self, request: Request_http):

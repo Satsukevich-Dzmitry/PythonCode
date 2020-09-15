@@ -39,15 +39,15 @@ def to_bytes(massage: str) -> bytes:
     return massage
 
 
-def save_user_qs_to_file(query: str):
-    qs_file = project_dir / "storage" / "xxx.txt"
+def save_user_qs_to_file(query: str, sessionID: str):
+    qs_file = project_dir / "storage" / f"sessionID={sessionID}.txt"
 
     with qs_file.open("w") as dst:
         dst.write(query)
 
 
-def get_user_qs_from_file():
-    qs_file = project_dir / "storage" / "xxx.txt"
+def get_user_qs_from_file(sessionID: str):
+    qs_file = project_dir / "storage" / f"sessionID={sessionID}.txt"
     if not qs_file.is_file():
         return ""
 
@@ -59,12 +59,13 @@ def get_user_qs_from_file():
 
     return content
 
-def delete_file():
-    qs_file = project_dir / "storage" / "xxx.txt"
-    if not qs_file.is_file():
+def get_session(headers):
+    session_number = headers.get("Cookie", 0)
+
+    if not session_number:
         return ""
 
-    os.remove(qs_file)
+    return session_number
 
 def get_qs_fromPostRequest(headers, rfile) -> str:
     content_length_str = headers.get("content-length", 0)
