@@ -24,9 +24,11 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(message)
 
-    def redirect(self, to: str):
+    def redirect(self, to: str, set_cookies=""):
         self.send_response(302)
         self.send_header("Location", to)
+        if set_cookies:
+            self.send_header("Set-Cookie", f"{set_cookies}")
         self.end_headers()
 
     def render_hello(self, Names: str):
@@ -95,8 +97,12 @@ class MyHandler(SimpleHTTPRequestHandler):
     def reset_data(self, request: Request_http):
         if request.method != "post":
             raise MethodNotAllowed
-        save_user_qs_to_file("name=&surname=&age=")
-        self.redirect("/hello")
+        sessionID = custom_func.get_session(self.headers)
+        qs_file = project_dir / "storage" / f"sessionID={sessionID}.txt"
+        if os.path.exists(qs_file):
+            os.remove(qs_file)
+        self.redirect("/hello", set_cookies=f"{sessionID}; Max-Age=-1; Path=/")
+
 
     def do_request(self, http_method):
         request = Request_http.from_path(self.path, method=http_method)

@@ -36,7 +36,6 @@ def to_bytes(massage: str) -> bytes:
     if isinstance(massage, str):
         massage = massage.encode()
     return massage
-    return massage
 
 
 def save_user_qs_to_file(query: str, sessionID: str):

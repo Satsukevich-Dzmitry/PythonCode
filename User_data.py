@@ -22,7 +22,7 @@ class User_name(NamedTuple):
         except ValueError:
             keys_and_values ={
                 "name": ["stranger"],
-                "surname": ["Didn't tell"],
+                "surname": ["none"],
                 "age": [0],
             }
         name_list = keys_and_values.get("name")
