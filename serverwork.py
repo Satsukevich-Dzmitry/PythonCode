@@ -52,9 +52,12 @@ class MyHandler(SimpleHTTPRequestHandler):
         sessionID = self.headers.get("Cookie")
         if not sessionID:
             sessionID = str(self.generate_session())
+            query_string = get_user_qs_from_file(sessionID)
+            content = self.render_hello(query_string)
+            self.respond(content, set_cookies=sessionID)
         query_string = get_user_qs_from_file(sessionID)
         content = self.render_hello(query_string)
-        self.respond(content, set_cookies=sessionID)
+        self.respond(content)
 
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
