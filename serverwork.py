@@ -101,11 +101,19 @@ class MyHandler(SimpleHTTPRequestHandler):
         if request.method != "post":
             raise MethodNotAllowed
         sessionID = custom_func.get_session(self.headers)
-        qs_file = project_dir / "storage" / f"sessionID={sessionID}.txt"
+        qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
         if os.path.exists(qs_file):
             os.remove(qs_file)
         self.redirect("/hello", set_cookies=f"{sessionID}; Max-Age=-1; Path=/")
 
+
+    def set_backgrond(self, request: Request_http):
+        if request.method != "post":
+            raise MethodNotAllowed
+        sessionID = custom_func.get_session(self.headers)
+        qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
+
+        self.redirect("/hello")
 
     def do_request(self, http_method):
         request = Request_http.from_path(self.path, method=http_method)
@@ -116,7 +124,8 @@ class MyHandler(SimpleHTTPRequestHandler):
                     "/images/": [self.import_file, [f"images/{request.file_name}", "rb", "image", f"{request.contenttype}"]],
                     "/html_files/": [self.import_file, [f"html_files/{request.file_name}", "r", "text", f"{request.contenttype}"]],
                     "/handle_hello_update/": [self.handle_hello_update, [request, user]],
-                    "/reset/": [self.reset_data, [request]]
+                    "/reset/": [self.reset_data, [request]],
+                    "/set_background/": [self.set_background, [request]],
                     }
         try:
             try:

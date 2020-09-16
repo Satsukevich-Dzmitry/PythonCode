@@ -56,7 +56,10 @@ class User_name(NamedTuple):
             else:
                 year = f"You was born at {abs(datetime.now().year - age)}BC (Srsly?)"
         else:
-            year = "Incorrect value of age"
+            if age == 0:
+                year = "Yet to be set"
+            else:
+                year = "Incorrect value of age"
 
         if errors:
             valid = False

@@ -1,3 +1,4 @@
+import json
 import os
 
 from Consts import project_dir
@@ -38,33 +39,25 @@ def to_bytes(massage: str) -> bytes:
     return massage
 
 
-def save_user_qs_to_file(query: str, sessionID: str):
-    qs_file = project_dir / "storage" / f"sessionID={sessionID}.txt"
-
+def save_user_qs_to_file(profile: str, sessionID: str):
+    qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
+    data = {
+        "profile": profile,
+    }
     with qs_file.open("w") as dst:
-        dst.write(query)
+        json.dump(data, dst)
 
+#Изменить
 
 def get_user_qs_from_file(sessionID: str):
-    qs_file = project_dir / "storage" / f"sessionID={sessionID}.txt"
+    qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
     if not qs_file.is_file():
-        return ""
+        return None
 
     with qs_file.open("r") as src:
-        content = src.read()
+        content = json.load(src)
 
-    if isinstance(content, bytes):
-        content = content.decode()
-
-    return content
-
-def get_session(headers):
-    session_number = headers.get("Cookie", 0)
-
-    if not session_number:
-        return ""
-
-    return session_number
+    return content.get("profile")
 
 def get_qs_fromPostRequest(headers, rfile) -> str:
     content_length_str = headers.get("content-length", 0)
@@ -76,6 +69,14 @@ def get_qs_fromPostRequest(headers, rfile) -> str:
     payload_bytes = rfile.read(content_length)
     payload = payload_bytes.decode()
     return payload
+
+def get_session(headers):
+    session_number = headers.get("Cookie", 0)
+
+    if not session_number:
+        return ""
+
+    return session_number
 
 
 def name_validation(names: str):
