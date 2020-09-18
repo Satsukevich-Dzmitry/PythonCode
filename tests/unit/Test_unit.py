@@ -1,4 +1,4 @@
-from web_app_namespace import Web_App_Names
+
 from custom_func import build_path, to_bytes
 from custom_func import get_contenttype
 from custom_class import Request_http
@@ -56,16 +56,4 @@ def test_endpoint():
         got = Request_http.from_path(path, "get")
         assert got == expected, f"Get {got}, while expected {expected}"
 
-def test_querystr_read():
-    dataset = {
-        "": Web_App_Names(name="stranger", surname="Didn't tell", age=0, year="Wrong Input"),
-        "name=boy&surname=": Web_App_Names(name="boy", surname="Didn't tell", age=0, year="Wrong Input"),
-        "name=boy&surname=test": Web_App_Names(name="boy", surname="test", age=0, year="Wrong Input"),
-        "name=boy&surname=test&age=20": Web_App_Names(name="boy", surname="test", age=20, year="You was born at 2000"),
-        "name=boy&surname=test&age=tt": Web_App_Names(name="boy", surname="test", age=0, year="Wrong Input"),
-        "name=boy&surname=&age=tt": Web_App_Names(name="boy", surname="Didn't tell", age=0, year="Wrong Input"),
-        "name=boy&surname=test&age=-20": Web_App_Names(name="boy", surname="test", age=0, year="Wrong Input"),
-    }
-    for qs, expected in dataset.items():
-        got = Web_App_Names.get_qs_info(qs)
-        assert got == expected, f"With {qs} get {got}, while expected {expected}"
+
