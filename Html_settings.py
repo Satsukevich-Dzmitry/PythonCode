@@ -1,10 +1,11 @@
 from typing import NamedTuple, Optional
+from urllib.parse import parse_qs
 
 from User_data import User_name
 
 class Html_colors(NamedTuple):
-    text_color: str
-    input_color: str
+    text_color: Optional[str]
+    input_color: Optional[str]
     @classmethod
     def html_colors(cls, user: User_name):
         text_color = "White"

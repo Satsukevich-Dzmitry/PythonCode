@@ -1,7 +1,8 @@
 import json
 import os
+from typing import Optional
 
-from Consts import project_dir
+from Consts import project_dir, DEFAULT_THEME, THEMES
 from errors import NotFound
 
 
@@ -48,6 +49,42 @@ def save_user_qs_to_file(profile: str, sessionID: str):
         json.dump(data, dst)
 
 #Изменить
+def switch_theme(current_theme: Optional[str]) -> str:
+    themes = sorted(THEMES)
+    themes_fsm = {th1: th2 for th1, th2 in zip(themes, reversed(themes))}
+
+    new_theme = themes_fsm[current_theme or DEFAULT_THEME]
+
+    return new_theme
+
+def save_theme_to_file(sessionID: str, new_theme: str):
+    session_data = get_file(sessionID)
+    session_data.update({"theme": new_theme} or {})
+
+    data_file = project_dir / "storage" / f"sessionID={sessionID}.json"
+    with data_file.open("w") as dst:
+        json.dump(session_data, dst)
+
+def get_file(sessionID: str):
+    qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
+    empty_dict = {}
+    if not qs_file.is_file():
+        return empty_dict
+
+    with qs_file.open("r") as src:
+        data = json.load(src)
+
+    return data or empty_dict
+
+def get_theme_from_file(sessionID: str):
+    qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
+    if not qs_file.is_file():
+        return None
+
+    with qs_file.open("r") as src:
+        content = json.load(src)
+
+    return content.get("theme", DEFAULT_THEME)
 
 def get_user_qs_from_file(sessionID: str):
     qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"

@@ -35,6 +35,8 @@ class MyHandler(SimpleHTTPRequestHandler):
         name_dict = User_name.get_qs_info(Names)
         file = custom_func.read_content("html_files/hello.html").decode()
         text_color = Html_colors.html_colors(name_dict)
+        session_ID= custom_func.get_session(self.headers)
+        theme = custom_func.get_theme_from_file(session_ID)
         page_data = {
             "user_name": name_dict.name,
             "user_surname": name_dict.surname,
@@ -42,6 +44,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             "user_age": name_dict.age,
             "html_text_color": text_color.text_color,
             "html_input_color": text_color.input_color,
+            "theme": theme,
         }
         content = file.format(**page_data)
         return content
@@ -107,12 +110,13 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.redirect("/hello", set_cookies=f"{sessionID}; Max-Age=-1; Path=/")
 
 
-    def set_backgrond(self, request: Request_http):
+    def set_background(self, request: Request_http):
         if request.method != "post":
             raise MethodNotAllowed
         sessionID = custom_func.get_session(self.headers)
-        qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
-
+        current_theme = custom_func.get_theme_from_file(sessionID)
+        new_theme = custom_func.switch_theme(current_theme)
+        custom_func.save_theme_to_file(sessionID, new_theme)
         self.redirect("/hello")
 
     def do_request(self, http_method):

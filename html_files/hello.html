@@ -1,7 +1,7 @@
 <html>
                             <head>
                             <title>Hello Page</title>
-                            <link rel="stylesheet" href="/style/hello.css/">
+                            <link rel="stylesheet" href="/style/hello{theme}.css/">
                             </head>
                             <body>
                             <h1 class="ribbon"><strong class="ribbon-content">Hello {user_name} {user_surname}!</strong></h1>
@@ -19,9 +19,7 @@
                                 <button type="submit">Reset</button>
                             </form>
                             <form action="/set_background/" method="post" style="color: Red">
-                                   <p><b>What is your mind state?</b></p>
-                                    <p><input name="dzen" type="radio" value="white" > White</p>
-                                    <p><input name="dzen" type="radio" value="black"> Black</p>
+                                   <p><b>What is your mind state, Black or White?</b></p>
                                     <p><input type="submit" value="Choose your side"></p>
                                   </form>
                             <p><a href="/html_files/index.html" class="btn"> Opening_page </a></p>

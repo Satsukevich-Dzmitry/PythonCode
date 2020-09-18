@@ -34,7 +34,7 @@ def test_encode():
 def test_getting_filetype():
     dataset = {
         "unnamed.png": "png",
-        "hello.css": "css",
+        "hellodark.css": "css",
         "index.html": "html",
     }
     for path, expected in dataset.items():
