@@ -93,7 +93,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         check = user.valid
         if check:
             save_user_qs_to_file(qs, sessionID)
-            self.redirect("/hello")
+            self.redirect("/hello/")
 
         else:
             content = self.render_hello(qs)
@@ -107,7 +107,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         qs_file = project_dir / "storage" / f"sessionID={sessionID}.json"
         if os.path.exists(qs_file):
             os.remove(qs_file)
-        self.redirect("/hello", set_cookies=f"{sessionID}; Max-Age=-1; Path=/")
+        self.redirect("/hello/", set_cookies=f"{sessionID}; Max-Age=-1; Path=/")
 
 
     def set_background(self, request: Request_http):

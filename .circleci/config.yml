@@ -1,0 +1,65 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: circleci/python:3.8.5-browsers
+
+    environment:
+      PIPENV_VENV_IN_PROJECT: 1
+      PYTHONPATH: src
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - cc-venv-{{ checksum "Pipfile.lock" }}
+            - cc-venv- # used if checksum fails
+      - run:
+          name: Setting up virtualenv
+          command: |
+            sudo pip install pipenv
+            make venv-dev
+      - save_cache:
+          key: cc-venv-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ./.venv/
+
+      - restore_cache:
+          keys:
+            - cc-selenium-{{ checksum "./.circleci/selenium.link" }}
+            - cc-selenium- # used if checksum fails
+      - run:
+          name: Setting up Selenium
+          command: |
+            curl -O $(cat ./.circleci/selenium.link)
+            mv selenium-*.jar selenium.jar
+      - save_cache:
+          key: cc-selenium-{{ checksum "./.circleci/selenium.link" }}
+          paths:
+            - ./selenium.jar
+
+      - run:
+          name: (Running Selenium)
+          command: java -jar selenium.jar -log tests/functional/artifacts/selenium.log
+          background: true
+      - run:
+          name: (Running Local Web Server)
+          command: pipenv run python -m app
+          background: true
+
+      - run:
+          name: Performing Tests
+          command: |
+            make test
+      - store_artifacts:
+          path: tests/functional/artifacts/
+          destination: tr1
+      - store_test_results:
+          path: tests/functional/artifacts/
+
+workflows:
+  main:
+    jobs:
+      - build-and-test

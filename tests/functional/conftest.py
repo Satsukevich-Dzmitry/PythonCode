@@ -10,6 +10,7 @@ from Consts import project_dir
 def firefox():
     firefox_options = webdriver.FirefoxOptions()
     firefox_options.add_argument("--headless")
+    firefox_options.add_argument("--redirect")
 
     browser = webdriver.Firefox(options=firefox_options)
     browser.implicitly_wait(10)
