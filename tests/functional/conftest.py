@@ -10,8 +10,9 @@ from Consts import project_dir
 def firefox():
     firefox_options = webdriver.FirefoxOptions()
     firefox_options.add_argument("--headless")
+    firefox_options.add_argument("--redirect")
 
-    browser = webdriver.Firefox(firefox_options=firefox_options)
+    browser = webdriver.Firefox(options=firefox_options)
     browser.implicitly_wait(10)
 
     try:
@@ -26,3 +27,4 @@ def main_css():
     path = project_dir / "styles" / "index.css"
     with path.open("r") as src:
         yield src.read()
+
