@@ -28,13 +28,13 @@ def test_styles(firefox, main_css):
 """
 @pytest.mark.functional
 @screenshot_on_failure
-def test_hello(firefox, request):
+def test_hello(browser, request):
     name = "Dima"
     surname = "Sat"
     age = 19
     year = date.today().year - age
 
-    page = HelloPage(firefox, urlhello)
+    page = HelloPage(browser, urlhello)
 
     anon_on_page = "stranger none!"
     name_and_surname_on_page = f"Hello {name} {surname}!"
