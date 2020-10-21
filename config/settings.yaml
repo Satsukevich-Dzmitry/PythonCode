@@ -25,10 +25,9 @@ default:
 
 
 development:
-  DEBUG: true
+  DEBUG: True
   PORT: 8000
   SECRET_KEY: "1"
-
 
 heroku:
   ALLOWED_HOSTS:
