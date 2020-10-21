@@ -30,7 +30,7 @@ development:
 
 heroku:
   ALLOWED_HOSTS:
-    - "tms-project-my.herokuapp.com"
+    - "https://noway2codenoramal.herokuapp.com/"
   VENV_SYNTHETIC: true
 
 
