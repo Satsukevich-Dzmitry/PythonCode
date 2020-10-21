@@ -33,7 +33,7 @@ class MyHandler(SimpleHTTPRequestHandler):
 
     def render_hello(self, Names: str):
         name_dict = User_name.get_qs_info(Names)
-        file = custom_func.read_content("html_files/hello.html").decode()
+        file = custom_func.read_content("src/applications/hello/templates/hello/hello.html").decode()
         text_color = Html_colors.html_colors(name_dict)
         session_ID= custom_func.get_session(self.headers)
         theme = custom_func.get_theme_from_file(session_ID)
@@ -58,9 +58,10 @@ class MyHandler(SimpleHTTPRequestHandler):
             query_string = get_user_qs_from_file(sessionID)
             content = self.render_hello(query_string)
             self.respond(content, set_cookies=sessionID)
-        query_string = get_user_qs_from_file(sessionID)
-        content = self.render_hello(query_string)
-        self.respond(content)
+        else:
+            query_string = get_user_qs_from_file(sessionID)
+            content = self.render_hello(query_string)
+            self.respond(content)
 
 
     def import_file(self, path, mode="rb", content="image", filetype="jpg"):
