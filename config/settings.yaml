@@ -20,6 +20,8 @@ default:
   SECRET_KEY: ""
   TEMPLATE_ENGINE: "Django"
   VENV_SYNTHETIC: false
+  SENTRY_DSN: ""
+
 
 
 development:
@@ -30,7 +32,7 @@ development:
 
 heroku:
   ALLOWED_HOSTS:
-    - "https://noway2codenoramal.herokuapp.com/"
+    - "noway2codenoramal.herokuapp.com/"
   VENV_SYNTHETIC: true
 
 

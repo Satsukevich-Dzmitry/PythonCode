@@ -2,6 +2,19 @@ import os
 from pathlib import Path
 from dynaconf import settings as _ds
 import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
+sentry_sdk.init(
+    dsn="https://32ee61697d80432aa34c2511dc90e15e@o465195.ingest.sentry.io/5477460",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
 
 REPO_DIR = Path(__file__).resolve().parent.parent.parent
 BASE_DIR = REPO_DIR / "src"
@@ -13,7 +26,7 @@ SECRET_KEY = _ds.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = _ds.DEBUG
 
-ALLOWED_HOSTS = _ds.ALLOWED_HOSTS + ["localhost"]
+ALLOWED_HOSTS = _ds.ALLOWED_HOSTS #+ ["localhost"]
 
 
 # Application definition
