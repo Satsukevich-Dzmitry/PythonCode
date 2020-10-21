@@ -11,6 +11,7 @@ pytest-firefox = "*"
 
 [packages]
 django = "*"
+dj-database-url = "*"
 pillow = "*"
 python-settings = "*"
 requests = "*"
