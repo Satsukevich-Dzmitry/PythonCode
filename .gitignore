@@ -2,6 +2,7 @@
 **/*~
 **/.~
 **/.idea
+**/Pipfile.lock
 **/gitignore.swo
 **/pipenv
 **/.README.md.un~
