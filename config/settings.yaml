@@ -20,7 +20,6 @@ default:
   SECRET_KEY: ""
   TEMPLATE_ENGINE: "Django"
   VENV_SYNTHETIC: false
-  SENTRY_DSN: ""
 
 
 
