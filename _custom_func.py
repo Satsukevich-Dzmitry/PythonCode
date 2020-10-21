@@ -120,7 +120,7 @@ def name_validation(names: str):
     if not names.isalnum() or names.isdigit():
         raise ValueError("MUST contain letters")
 
-    lmin, lmax = 0, 20
+    lmin, lmax = 3, 20
     if not lmin <= len(names) <= lmax:
         raise ValueError(f"MUST have length between {lmin}..{lmax} chars")
 

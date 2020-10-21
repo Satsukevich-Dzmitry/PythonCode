@@ -1,0 +1,17 @@
+{% extends "_base.html" %}
+{% load static %}
+
+                            {%block title%}HomePage{% endblock %}
+                            {% block Head %} <link href="{% url "hello:hellocss" %}" rel="stylesheet" type="text/css">{% endblock %}
+                            {% block body %}<h1 class="ribbon"><strong class="ribbon-content">Hello {{ user_name }} {{ user_surname }}!</strong></h1>
+                            <h1 class="h">You was born in {{ user_year }}!</h1>
+                            <form action="{% url "hello:update" %}" method="post">
+                                {{form.as_p}}
+                                <button id="greet-button-id" class="submit_button" type="submit">Thanks</button>
+                                {% csrf_token %}
+                            </form>
+                            <form action="{% url "hello:reset" %}" method="post">
+                                <button id="reset" type="submit">Reset</button>
+                                {% csrf_token %}
+                            </form>
+                            <p><a href="{% url "home:index" %}" class="btn"> Opening_page </a></p>{% endblock %}

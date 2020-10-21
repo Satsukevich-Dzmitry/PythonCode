@@ -1,0 +1,24 @@
+{% load static %}
+H1 {
+  color: #E0FFFF;
+  font-size: 200%;
+  font-family: Arial, Verdana, sans-serif;
+  text-align: center;
+}
+P {
+  padding-left: 40px;
+}
+body{
+ background-image: url("{% static 'home/images/unnamed.png' %}" );
+}
+.colortext {
+    color: #930;
+   }
+.btn {
+    display: inline-block;
+    background: #DAA520;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    border-radius: 15px;
+    }

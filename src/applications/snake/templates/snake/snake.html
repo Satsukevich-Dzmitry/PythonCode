@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+{% load static %}
+    {% block title %}Snake game{% endblock %}
+    {% block Head %}<meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'snake/snake_style.css' %}">
+    {% endblock %}
+    {% block body %}
+    <canvas id="snake" width="608" height="608"></canvas>
+    <script src="{% url "snake:snakescript" %}"></script>
+    {% endblock %}

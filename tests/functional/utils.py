@@ -5,6 +5,10 @@ from selenium import webdriver
 
 from Consts import project_dir
 
+def build_mosila():
+    pass
+
+
 def build_chrome():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")

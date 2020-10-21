@@ -11,8 +11,8 @@ from selenium.webdriver.common.keys import Keys
 
 from tests.functional.utils import screenshot_on_failure
 
-url = "http://localhost:8000"
-urlhello = "http://localhost:8000/hello/"
+url = "http://127.0.0.1:8000/"
+urlhello = "http://127.0.0.1:8000/hello/"
 """
 @pytest.mark.functional
 def test_opening_page(firefox):
@@ -36,9 +36,9 @@ def test_hello(browser, request):
 
     page = HelloPage(browser, urlhello)
 
-    anon_on_page = "stranger none!"
-    name_and_surname_on_page = f"Hello {name} {surname}!"
-    year_on_page = f"You was born at {year}!"
+    anon_on_page = "anon"
+    name_and_surname_on_page = f"Hello {name}"
+    year_on_page = f"{year}!"
 
     validate_content(page, anon_on_page)
 

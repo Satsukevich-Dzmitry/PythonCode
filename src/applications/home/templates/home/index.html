@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{%block title%}HomePage{% endblock %}
+{% block Head %} <link rel="stylesheet" href="{% url "home:indexcss" %}"> {% endblock %}
+{% block body %}<h1>Opening_page(not_functional)</h1>
+                 <p><a href="{% url "hello:index" %}" class="btn"> Hello </a></p>
+                 <p><a href="{% url "snake:snake" %}" class="btn"> Snake game </a></p>
+                <p align="center"><a href ="{% static 'home/images/IMG_1335.jpg' %}"><img alt="" height="400" src="{% static 'home/images/opening_picture.jpg' %}"  width="550"></a></p>
+{% endblock %}
