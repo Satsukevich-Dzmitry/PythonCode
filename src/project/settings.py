@@ -11,9 +11,9 @@ PROJECT_DIR = BASE_DIR / "project"
 SECRET_KEY = _ds.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = _ds.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = _ds.ALLOWED_HOSTS + ["localhost"]
 
 
 # Application definition
