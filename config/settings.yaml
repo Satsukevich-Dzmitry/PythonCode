@@ -30,7 +30,7 @@ development:
 
 heroku:
   ALLOWED_HOSTS:
-    - "noway2codenoramal.herokuapp.com/"
+    - "noway2codenoramal.herokuapp.com"
   VENV_SYNTHETIC: true
 
 
