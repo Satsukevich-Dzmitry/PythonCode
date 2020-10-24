@@ -29,10 +29,10 @@ def index(request: HttpRequest):
     return HttpResponse(content)
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("applications.home.urls")),
     path("hello/", include("applications.hello.urls")),
     path("snake/", include("applications.snake.urls")),
-
 ]
