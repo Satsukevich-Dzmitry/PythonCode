@@ -35,4 +35,5 @@ urlpatterns = [
     path("", include("applications.home.urls")),
     path("hello/", include("applications.hello.urls")),
     path("snake/", include("applications.snake.urls")),
+    path("blog/", include("applications.blog.urls"))
 ]

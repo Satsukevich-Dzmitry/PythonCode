@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'applications.hello.apps.HelloConfig',
     'applications.home.apps.HomeConfig',
     'applications.snake.apps.SnakeConfig',
+    'applications.blog.apps.BlogConfig',
 ]
 
 MIDDLEWARE = [

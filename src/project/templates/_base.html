@@ -7,6 +7,10 @@
                 {% block Head %}{% endblock %}
                 </head>
                 <body>
+                <p><a href="{% url "home:index" %}" class="btn"> Home page </a>
+                    <a href="{% url "blog:index" %}" class="btn"> Blog </a>
+                <a href="{% url "hello:index" %}" class="btn"> Hello </a>
+                <a href="{% url "snake:snake" %}" class="btn"> Snake game </a></p>
                 {% block body %}{% endblock %}
                 <form action="/set_background/" method="post" style="color: Red">
                                    <p><b>What is your mind state, Black or White?</b></p>
